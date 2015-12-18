@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Проверка флешки</string>
+    <string name="choose_path">Выберите путь:</string>
+    <string name="write">Запись</string>
+    <string name="read">Проверка</string>
+    <string name="stop">Стоп</string>
+    <string name="choose_another">Выбраный путь не существует!</string>
+    <string name="choose_size">Введите тестируемый размер (в байтах):</string>
+    <string name="set">Ввести</string>
+    <string name="wrt">Записано:</string>
+    <string name="mb"> Мб</string>
+    <string name="verify">Можете проверять!</string>
+    <string name="na">не доступно</string>
+    <string name="working">Рабочих:</string>
+    <string name="errors">Ошибок:</string>
+    <string name="over">Тест окончен!</string>
+    <string name="Instruction_title">Инструкция</string>
+    <string name="about_title">О программе</string>
+    <string name="action_about">О программе</string>
+    <string name="caution_bad">Флешка повреждена или поддельная!</string>
+    <string name="caution_good">Хорошая флешка без ошибок</string>
+
+    <string name="about_text">
+    Программа тестирования действительной вместимости флеш памяти.
+    Если Вы купили огромную MicroSD или USB флешку на Ebay.com или Aliexpress.com, то попробуйте проверить её.
+    Проверка подлинной флешки будет завершена без ошибок в отличии от китайских подделок.
+    Рекомендую Вам сначала прочитать инструкцию по использованию. \n \n
+    Автор: Моторный Максим Иванович \n \n
+    Пожалуйста присылайте пожелания на <a href="mailto:motorny.maksim@gmail.com">motorny.maksim@gmail.com</a>
+    </string>
+
+    <string name="instruction_text">
+    ВНИМАНИЕ!!! Запись информации на поддельные флешки может вызвать их неисправность! Это из-за их поддельного несуществующего размера! \n \n
+    1. Очень рекомендую перед тестированием отформатировать флешку. Иначе программа просто протестирует только свободную память. \n \n
+    2. Выберите устройство для проверки. Используйте выпадающий список вверху экрана. \n \n
+    3. Нажмите кнопку Запись. И ждите пока запись информации закончится. Вы также можете прервать запись нажав кнопку Стоп. Если Вы снова нажмете кнопку Запись, то программа продолжит писать с того места, где остановилась. \n \n
+    4. После записи Вы можете начать проверку нажав кнопку Проверка. Если тест завершился без ошибок, то это значит, что тестируемая область памяти рабочая. Если есть ошибки, то значит, что флешка либо повреждена, либо имеет поддельный размер. \n \n
+    5. Во время тестирования программа создает папки ANDROID/data/ua.motorny.flasdrivecheck/files/CHK в том месте, которое Вы тестируете. Так что удалите ей, что бы освободить место с помощью кнопки Стереть или вручную. \n \n
+    7. Если Вам понравилась или не понравилась программа, то пожалуйста присылайте свои пожелания на <a href="mailto:motorny.maksim@gmail.com">motorny.maksim@gmail.com</a>. Мне очень важно знать Ваше мнение. \n \n
+    8. Оцените мою программу на Google Play. \n \n
+    9. А Вы заметили, что отсутствует пукнт 6? Нет? Значит Вы невнимательно читали инструкцию =) </string>
+    <string name="deleted">Проверочные файлы были успешно удалены!</string>
+    <string name="deleting">"Удаляю: "</string>
+    <string name="erase">Стереть</string>
+    <string name="start_write">Начинаем писать!</string>
+    <string name="wait">Пожалуйста, подождите!</string>
+    <string name="tested">Протестировано:</string>
+    <string name="free">%1$d. %2$s (%3$s свободно)</string>
+    <string name="please_stop_before_exit">"Пожалуйста, для выхода из приложения сначала остановите тестирование!"</string>
+
+
+
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ua.motorny.flashdrivecheck" >
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".AboutActivity"
+            android:label="@string/about_title"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+
+        <activity android:name=".InstructionActivity"
+            android:label="@string/Instruction_title">
+        </activity>
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3414dc8dec5a5965a456f44fae08d6240d055c26" />
+    </application>
+
+</manifest>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Flash drive size check</string>
+    <string name="action_about">About</string>
+    <string name="choose_path">Choose the path:</string>
+    <string name="write">Write</string>
+    <string name="read">Verify</string>
+    <string name="stop">Stop</string>
+    <string name="choose_another">Chosen path does not exist!</string>
+    <string name="choose_size">Set the size for testing:</string>
+    <string name="set">Set</string>
+    <string name="wrt">Written:</string>
+    <string name="mb"> Mb</string>
+    <string name="verify">You can verify now!</string>
+    <string name="na">is not available</string>
+    <string name="working">Working:</string>
+    <string name="errors">Errors:</string>
+    <string name="over">Test is over! </string>
+    <string name="about_title">About this program</string>
+    <string name="Instruction_title">Instruction</string>
+    <string name="caution_bad">Flash drive corrupted or it has fake size!</string>
+    <string name="caution_good">Good flash drive without errors!</string>
+    <string name="erase">Erase</string>
+    <string name="deleted">Testing files was deleted!</string>
+    <string name="deleting">Deleting: </string>
+    <string name="wait">Please wait!</string>
+    <string name="start_write">Starting to write!</string>
+    <string name="tested">Have been tested: </string>
+    <string name="free">%1$d. %2$s (%3$s free space)</string>
+
+    <string name="about_text">
+    Program for checking the real capacity of chinese flash drives.
+    If you bought huge size MicroSD or USB memory stick on Ebay.com or Aliexpress.com just try to test it.
+    Authentic memory flash will pass the check without errors instead of fake chinese crap.
+    Suggest you to read the instruction before using. \n \n
+    Author: Motorny Maksim Ivanovich \n \n
+    Please send your feedback to <a href="mailto:motorny.maksim@gmail.com">motorny.maksim@gmail.com</a>
+    </string>
+
+    <string name="instruction_text">
+    WARNING!!! Writing the information to fake flash drives may cause their malfunctions! It is because of their fake size which does not exist really! \n \n
+
+    1. It is highly recommended to format your flash drive before testing. Other way program will test only free space. \n \n
+    2. Choose the device which you want to test using spinner in the top of screen. \n \n
+    3. Tap the Write button. And wait until writing is over. You can cancel writing and check that files which already wrote. When you tap the Write button another one time it will continue to writing from that place where it have been canceled. Also you can minimize program during the writing process. \n \n
+    4. After writing you can tap the Verify button and it will check all information which was wrote. If there are no errors it means that tested space are real and you can use it. If there are errors it means that flash drive are corrupted or has fake size. \n \n
+    5. During testing program creates directories ANDROID/data/ua.motorny.flasdrivecheck/files/CHK in that place which you testing. So delete it after testing using Erase button or manually. \n \n
+    7. If you like or dislike program please send me email with your regards. Your feedback is very necessary for me! Here is my email: <a href="mailto:motorny.maksim@gmail.com">motorny.maksim@gmail.com</a> \n \n
+    8. Rate my program on Google Play. Thank you for using! \n \n
+    9. Have you noticed that there is no point 6. No? It means you payd not enough attention to reading this manual =) </string>
+
+    <string name="please_stop_before_exit">"Please stop testing to exit from application"</string>
+
+</resources>
