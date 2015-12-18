@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,16 +20,12 @@ import com.crashlytics.android.Crashlytics;
 import io.fabric.sdk.android.Fabric;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity implements VerifyTask.VerifyCallbacks {
+public class MainActivity extends AppCompatActivity implements VerifyTask.VerifyCallbacks, WriteTask.WriteCallbacks {
 
-    public static String dirPath = "/Android/data/ua.motorny.flashdrivecheck/files/CHK";
-    private static final String TAG = "FlashTest";
+    public static final String dirPath = "/Android/data/ua.motorny.flashdrivecheck/files/CHK";
 
     private Spinner devices_spinner;
     private TextView temp_textView;
@@ -99,6 +94,9 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
             stringListOfDevices.add(getResources().getString(R.string.free, storageList.get(i).number + 1, storageList.get(i).getDisplayName(), storageList.get(i).getFreeFormattedSize()));
         }
 
+        //todo implement manually setting of path
+//        stringListOfDevices.add("Choose manually");
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, stringListOfDevices);
         dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         devices_spinner.setAdapter(dataAdapter);
@@ -162,96 +160,28 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
         size_editText.setEnabled(true);
     }
 
-    private class WriteTask extends AsyncTask<Void, Long, Void> {
-        protected long writed;
+    @Override
+    public void writeOnPreExecute() {
+        temp_textView.setText(getResources().getString(R.string.start_write));
+    }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            temp_textView.setText(getResources().getString(R.string.start_write));
-        }
+    @Override
+    public void writeProgressUpdate(long writed) {
+        temp_textView.setText(getResources().getString(R.string.wrt) + " " + writed + getResources().getString(R.string.mb) + '/' + Long.toString(checksize) + getResources().getString(R.string.mb));
+    }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                long cnt_wrt = 0;
+    @Override
+    public void writeCancelled(long writed) {
+        temp_textView.setText(getResources().getString(R.string.wrt) + " " + writed + getResources().getString(R.string.mb) + "\n" + getResources().getString(R.string.verify));
+        size_editText.setEnabled(true);
+        addDevicesToList();
+    }
 
-                int mb = 1048576; // 1 mb
-                int gb = 1073741824; // 1gb
-
-                for (long fileCount = 0; currentStorage.getFreeSize() > mb; fileCount++) {
-                    File directories = new File(currentStorage.path + dirPath);
-                    if (!directories.exists()) {
-                        if (directories.mkdirs()) {
-                            Log.d(TAG, "Directory " + directories.toString() + " was created");
-                        } else {
-                            Log.d(TAG, "Can't create: " + directories.toString());
-                        }
-                    }
-                    File fhandle = new File(currentStorage.path + dirPath + "/check" + fileCount + ".dat");
-
-                    if (!fhandle.exists()) {
-                        try {
-                            RandomAccessFile out = new RandomAccessFile(currentStorage.path + dirPath + "/check" + fileCount + ".dat", "rw");
-
-                            for (long determinedbytes = 0; determinedbytes < 1024; determinedbytes++) {
-                                out.seek(mb * determinedbytes);
-                                out.writeLong(cnt_wrt);
-                                cnt_wrt++;
-                                publishProgress(cnt_wrt);
-                                if ((fileCount + 1) * determinedbytes + 1 == checksize || (fileCount + 1) * determinedbytes + 1 == currentStorage.getFreeSize()) {
-                                        this.cancel(true);
-                                    }
-                                if (isCancelled()) return null;
-                            }
-                            out.seek(gb-1);
-                            out.writeByte(0);
-                            out.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            this.cancel(true);
-                            TimeUnit.SECONDS.sleep(1);
-                        }
-                    } else {
-                        cnt_wrt += fhandle.length()/1024/1024;
-                    }
-                }
-                // разъединяемся
-                TimeUnit.MILLISECONDS.sleep(1);
-                if (isCancelled()) return null;
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        @Override
-           protected void onProgressUpdate(Long... values) {
-            super.onProgressUpdate(values);
-            writed=values[0];
-            if (!this.isCancelled()) {
-                temp_textView.setText(getResources().getString(R.string.wrt) + " " + writed + getResources().getString(R.string.mb) + '/' + Long.toString(checksize) + getResources().getString(R.string.mb));}
-        }
-
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            super.onPostExecute(result);
-            writed--;
-            temp_textView.setText(getResources().getString(R.string.wrt) + " " + writed + getResources().getString(R.string.mb) + "\n" + getResources().getString(R.string.verify));
-            size_editText.setEnabled(true);
-            addDevicesToList();
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-
-            temp_textView.setText(getResources().getString(R.string.wrt) + " " + writed + getResources().getString(R.string.mb) + "\n" + getResources().getString(R.string.verify));
-            size_editText.setEnabled(true);
-            addDevicesToList();
-        }
+    @Override
+    public void writeOnPostExecute(long writed) {
+        temp_textView.setText(getResources().getString(R.string.wrt) + " " + writed + getResources().getString(R.string.mb) + "\n" + getResources().getString(R.string.verify));
+        size_editText.setEnabled(true);
+        addDevicesToList();
     }
 
     private class DeleteTask extends AsyncTask<Void, String, Void> {
@@ -271,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
 
         @Override
         protected Void doInBackground(Void... params) {
-            File file = new File(currentStorage.path + dirPath);
+            File file = new File(currentStorage.file + dirPath);
             delete(file);
             return null;
         }
@@ -295,13 +225,14 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
     public void action (View view) {
         checksize = storageList.get(devices_spinner.getSelectedItemPosition()).totalSize / 1024 / 1024;
 
-        if (currentStorage.path != null) {
+        if (currentStorage.file != null) {
             switch (view.getId()) {
                 case R.id.start_button:
                     if (verifyTask != null && verifyTask.getStatus() == AsyncTask.Status.RUNNING) {
                         verifyTask.cancel(true);
                     }
-                        writeTask = new WriteTask();
+                        writeTask = new WriteTask(currentStorage, checksize);
+                        writeTask.setCallbacks(this);
                         writeTask.execute();
                         size_editText.setEnabled(false);
                     break;
@@ -345,8 +276,8 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
 
     @Override
     public void onBackPressed() {
-        if (writeTask.getStatus() == AsyncTask.Status.RUNNING || verifyTask.getStatus() == AsyncTask.Status.RUNNING) {
-            Toast.makeText(this, "Для выхода из приложения, пожалуйста, остановите тестирование!", Toast.LENGTH_SHORT).show();
+        if (writeTask != null && writeTask.getStatus() == AsyncTask.Status.RUNNING || verifyTask != null && verifyTask.getStatus() == AsyncTask.Status.RUNNING) {
+            Toast.makeText(this, R.string.please_stop_before_exit, Toast.LENGTH_SHORT).show();
         } else {
             super.onBackPressed();
         }

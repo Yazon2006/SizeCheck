@@ -31,10 +31,10 @@ class VerifyTask extends AsyncTask<Void, Integer, Void> {
         try {
             int mb = 1048576; // 1 mb
             for (long filecount = 0; filecount < 1024; filecount++) {
-                File fhandle = new File(currentStorage.path + MainActivity.dirPath + "/check" + filecount + ".dat");
+                File fhandle = new File(currentStorage.file + MainActivity.dirPath + "/check" + filecount + ".dat");
                 if (fhandle.exists()) {
                     try {
-                        RandomAccessFile out = new RandomAccessFile(currentStorage.path + MainActivity.dirPath + "/check" + filecount + ".dat", "rw");
+                        RandomAccessFile out = new RandomAccessFile(currentStorage.file + MainActivity.dirPath + "/check" + filecount + ".dat", "rw");
                         for (long determinedbytes=0; determinedbytes < fhandle.length()/1024/1024; determinedbytes++) {
                             out.seek(mb * determinedbytes);
                             if (out.readLong() == cnt_chk) {
