@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         maven { url 'https://maven.fabric.io/public' }
+        mavenCentral()
     }
 
     dependencies {
@@ -20,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId "ua.motorny.flashdrivecheck"
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 23
         versionCode 7
         versionName "1.0.7"
@@ -41,5 +42,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
+
+    compile 'com.nononsenseapps:filepicker:2.4.2'
 
 }

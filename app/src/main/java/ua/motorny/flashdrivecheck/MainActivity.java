@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.nononsenseapps.filepicker.FilePickerActivity;
+
 import io.fabric.sdk.android.Fabric;
 
 import java.io.File;
@@ -26,6 +29,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements VerifyTask.VerifyCallbacks, WriteTask.WriteCallbacks {
 
     public static final String dirPath = "/Android/data/ua.motorny.flashdrivecheck/files/CHK";
+    private static final int REQUEST_DIRECTORY = 1;
 
     private Spinner devices_spinner;
     private TextView temp_textView;
@@ -42,8 +46,29 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
     private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            currentStorage = storageList.get(position);
-            size_editText.setText(String.valueOf(currentStorage.totalSize));
+            if (position < storageList.size()) {
+                currentStorage = storageList.get(position);
+                size_editText.setText(String.valueOf(currentStorage.totalSize));
+            } else {
+                // This always works
+                Intent i = new Intent(MainActivity.this, FilePickerActivity.class);
+                // This works if you defined the intent filter
+                // Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+
+                // Set these depending on your use case. These are the defaults.
+                i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+                i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+                i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_DIR);
+
+                // Configure initial directory by specifying a String.
+                // You could specify a String like "/storage/emulated/0/", but that can
+                // dangerous. Always use Android's API calls to get paths to the SD-card or
+                // internal memory.
+                i.putExtra(FilePickerActivity.EXTRA_START_PATH, Environment.getExternalStorageDirectory().getPath());
+
+                startActivityForResult(i, REQUEST_DIRECTORY);
+
+            }
         }
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
@@ -95,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements VerifyTask.Verify
         }
 
         //todo implement manually setting of path
-//        stringListOfDevices.add("Choose manually");
+        stringListOfDevices.add("Choose manually");
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, stringListOfDevices);
         dataAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
