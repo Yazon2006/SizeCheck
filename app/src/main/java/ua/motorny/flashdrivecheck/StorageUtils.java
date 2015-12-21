@@ -22,19 +22,19 @@ public class StorageUtils {
     public static List<StorageInfo> getStorageList() {
 
         List<StorageInfo> list = new ArrayList<>();
-        String defPath = Environment.getExternalStorageDirectory().getPath();
+        File defPath = Environment.getExternalStorageDirectory();
         boolean defPathRemovable = Environment.isExternalStorageRemovable();
         String defPathState = Environment.getExternalStorageState();
         boolean defPathAvailable = defPathState.equals(Environment.MEDIA_MOUNTED)
                 || defPathState.equals(Environment.MEDIA_MOUNTED_READ_ONLY);
         boolean defPathReadonly = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED_READ_ONLY);
 
-        HashSet<String> paths = new HashSet<>();
+        HashSet<File> paths = new HashSet<>();
         int curRemovableNumber = 0;
 
         if (defPathAvailable) {
             paths.add(defPath);
-            list.add(0, new StorageInfo(defPath, defPathReadonly, defPathRemovable, curRemovableNumber++ , getSize(defPath)));
+            list.add(0, new StorageInfo(defPath, defPathReadonly, defPathRemovable, curRemovableNumber++ , getSize(defPath.getPath())));
             Log.d(TAG, ">>>>> added new storage: " + defPath);
         }
 
@@ -49,7 +49,7 @@ public class StorageUtils {
                     StringTokenizer tokens = new StringTokenizer(line, " ");
                     String unused = tokens.nextToken(); //device
                     String mountPoint = tokens.nextToken(); //mount point
-                    if (paths.contains(mountPoint)) {
+                    if (paths.contains(new File(mountPoint))) {
                         continue;
                     }
                     unused = tokens.nextToken(); //file system
@@ -63,8 +63,9 @@ public class StorageUtils {
                             && !line.contains("/dev/mapper")
                             && !line.contains("tmpfs")) {
                             if (getSize(mountPoint) > 0l) {
-                                paths.add(mountPoint);
-                                list.add(new StorageInfo(mountPoint, readonly, true, curRemovableNumber++, getSize(mountPoint)));
+                                File tempFile = new File(mountPoint);
+                                paths.add(tempFile);
+                                list.add(new StorageInfo(tempFile, readonly, true, curRemovableNumber++, getSize(mountPoint)));
                                 Log.d(TAG, ">>>>> added new storage: " + mountPoint);
                             } else {
                                 Log.d(TAG, ">>>>> " + mountPoint + " size is 0");
@@ -75,8 +76,8 @@ public class StorageUtils {
                                 String emulatedMountPoint = tmpTokens.nextToken();
                                 if (getSize(emulatedMountPoint) > 0l) {
                                     mountPoint = emulatedMountPoint;
-                                    paths.add(mountPoint);
-                                    list.add(new StorageInfo(mountPoint, readonly, true, curRemovableNumber++, getSize(mountPoint)));
+                                    File tempFile = new File(mountPoint);
+                                    list.add(new StorageInfo(tempFile, readonly, true, curRemovableNumber++, getSize(mountPoint)));
                                     Log.d(TAG, ">>>>> added new storage: " + mountPoint);
                                 }
                             }

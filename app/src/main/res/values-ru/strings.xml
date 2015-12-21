@@ -50,6 +50,4 @@
     <string name="free">%1$d. %2$s (%3$s свободно)</string>
     <string name="please_stop_before_exit">"Пожалуйста, для выхода из приложения сначала остановите тестирование!"</string>
 
-
-
 </resources>

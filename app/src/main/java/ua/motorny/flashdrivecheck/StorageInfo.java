@@ -10,14 +10,14 @@ public class StorageInfo {
     private static final long MB = 1048576l;
     private static final long KB = 1024l;
 
-    public final String path;
+    public File file;
     public final boolean readonly;
     public final boolean removable;
     public final int number;
     public final long totalSize;
 
-    StorageInfo(String path, boolean readonly, boolean removable, int number, long totalSize) {
-        this.path = path;
+    StorageInfo(File file, boolean readonly, boolean removable, int number, long totalSize) {
+        this.file = file;
         this.readonly = readonly;
         this.removable = removable;
         this.number = number;
@@ -30,7 +30,7 @@ public class StorageInfo {
             res.append("Internal SD card ");
             res.append(getFormattedSize());
         } else {
-            if (path.toLowerCase().contains("usb".toLowerCase())) {
+            if (file.getPath().toLowerCase().contains("usb")) {
                 res.append("USB drive ");
                 res.append(getFormattedSize());
             } else {
@@ -51,7 +51,7 @@ public class StorageInfo {
     public long getFreeSize() {
         long freeSize;
         try {
-            freeSize = new File(path).getFreeSpace();
+            freeSize = new File(file.getPath()).getFreeSpace();
         } catch (Exception e) {
             freeSize = 0l;
         }
